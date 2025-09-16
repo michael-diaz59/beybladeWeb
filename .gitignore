@@ -3,4 +3,6 @@
 
 # React Router
 /.react-router/
+
+/dist/
 /build/
