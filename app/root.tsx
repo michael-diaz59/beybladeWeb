@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -11,10 +11,13 @@ import { useAppSelector } from "./store/store-core";
 
 import './app.css'; 
 
-// Componente para leer el tema desde Redux
 function ThemedAppWrapper() {
   const mode = useAppSelector((state) => state.theme.mode);
   const theme = getTheme(mode);
+
+  useEffect(() => {
+    localStorage.setItem("themeMode", mode);
+  }, [mode]);
 
   return (
     <ThemeProvider theme={theme}>

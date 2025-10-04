@@ -5,9 +5,18 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+@media (max-width: 600px), (max-height: 400px) {
+  .small-screen\:overflow-auto {
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+  }
+}
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
+
+  min-width: 200px;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;

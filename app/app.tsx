@@ -1,13 +1,12 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./routes/home";
-import About from "./routes/about";
-import Calendar from "./routes/calendar";
-import Players from "./routes/players";
-import Layout from "./routes/_layout";
-import Teams from "./routes/teams";
-import Beys from "./routes/beys";
-import Store from "./routes/store";
+import Home from "./routes/base/home";
+import About from "./routes/base/about";
+import Calendar from "./routes/base/calendar";
+import Players from "./routes/base/players";
+import Layout from "./routes/base/_base_layout";
+import Teams from "./routes/base/teams";
+import Beys from "./routes/base/beys";
+import Store from "./routes/base/store";
 
 export default function App() {
   return (
