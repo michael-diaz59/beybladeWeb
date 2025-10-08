@@ -1,10 +1,10 @@
 import type { Route } from "../+types/about";
 
-import CardText from "app/components/card_text";
+import CardText from "~/atomic_design/molecules/cards/card_text";
 
-import TimeLine from "app/components/time_line";
+import TimeLine from "~/atomic_design/organisms/time_lines/time_line";
 
-import ImageRotation1 from "~/components/image_rotation1";
+import ImageRotation1 from "~/atomic_design/atoms/images/image_rotation1";
 
 import buster from "app/src/images/bustersin fondo2.png";
 

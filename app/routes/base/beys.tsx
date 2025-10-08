@@ -1,5 +1,5 @@
 import type { Route } from "../+types/beys";
-import UnderConstruction from "~/components/under_construction";
+import UnderConstruction from "~/atomic_design/templates/under_constructions/under_construction";
 
 export function meta({}: Route.MetaArgs) {
   return [

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import CardText from "app/components/card_text";
+import CardText from "~/atomic_design/molecules/cards/card_text";
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 

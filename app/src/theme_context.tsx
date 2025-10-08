@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useState, useEffect } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import { getTheme } from "./theme";
+import { getTheme } from "../atomic_design/natural_rules/theme";
 
 type ThemeMode = "light" | "dark";
 

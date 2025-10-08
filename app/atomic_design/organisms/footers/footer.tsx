@@ -1,7 +1,7 @@
 import { Box, Link, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import AccordionLinks from "app/components/accordions/acordition_link";
-import ListText from "./lists/list_text";
+import AccordionLinks from "~/atomic_design/molecules/accordions/acordition_link";
+import ListText from "../../molecules/lists/list_text";
 
 export default function Footer({}) {
   const theme = useTheme();

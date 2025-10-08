@@ -6,7 +6,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import App from "./app";
 import { store } from "./store/store-core";
-import { getTheme } from "./src/theme";
+import { getTheme } from "./atomic_design/natural_rules/theme";
 import { useAppSelector } from "./store/store-core";
 
 import './app.css'; 

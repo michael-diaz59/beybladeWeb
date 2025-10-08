@@ -6,9 +6,9 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import ThemeSwitch from "app/components/theme_switch";
-import Footer from "~/components/footer";
-import FloatAppBar from "~/components/organism/float_app_bar";
+import ThemeSwitch from "~/atomic_design/atoms/switchs/theme_switch";
+import Footer from "~/atomic_design/organisms/footers/footer";
+import FloatAppBar from "~/atomic_design/organisms/appBars/float_app_bar";
 
 // Estado del menú hamburguesa
 
