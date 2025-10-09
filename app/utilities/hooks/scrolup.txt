@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
-import { createContext, useContext, useEffect, useState, useRef } from "react";
-import type { ReactNode } from "react";
+import { createContext, useEffect, useState } from "react";
 
 
 /**
@@ -94,12 +93,28 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     prevScrollY.current = currentY;
   }, []);
 
+  
+
   useEffect(() => {
+ 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+   
   }, [handleScroll]);
+
+  useEffect(() => {
+  console.log(
+    `%c[ScrollProvider]`,
+    "color:#4fc3f7; font-weight:bold;",
+    {
+      scrollY,
+      hasScrolled,
+      scrollDirection,
+    }
+  );
+}, [scrollY, hasScrolled, scrollDirection]);
 
   return (
     <ScrollContext.Provider value={{ scrollY, hasScrolled, scrollDirection }}>

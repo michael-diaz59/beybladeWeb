@@ -9,7 +9,8 @@ import { store } from "./store/store-core";
 import { getTheme } from "./atomic_design/natural_rules/theme";
 import { useAppSelector } from "./store/store-core";
 
-import './app.css'; 
+import "./app.css";
+import { ScrollProvider } from "./utilities/hooks/scroll_provider";
 
 function ThemedAppWrapper() {
   const mode = useAppSelector((state) => state.theme.mode);
@@ -22,7 +23,9 @@ function ThemedAppWrapper() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <ScrollProvider>
+        <App />
+      </ScrollProvider>
     </ThemeProvider>
   );
 }

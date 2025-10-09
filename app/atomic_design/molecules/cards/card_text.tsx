@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
-import UriBase from "~/utilities/uri-base64"
+import UriBase from "~/utilities/helper/uri-base64"
 
 export default function CardText({
   title,
