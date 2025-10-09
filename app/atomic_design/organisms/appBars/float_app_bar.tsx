@@ -6,10 +6,11 @@ import {
   Typography,
   IconButton,
   useTheme,
+  alpha,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
-import { useScroll } from "~/utilities/hooks/scroll_provider"; // 👈 tu hook de scroll
+import { useScroll } from "~/utilities/hooks/scroll_provider"; // tu hook de scroll
 
 const menuItems = [
   { label: "Inicio", path: "/home" },
@@ -23,22 +24,35 @@ const menuItems = [
 
 export default function FloatAppBar() {
   const theme = useTheme();
-  const { hasScrolled } = useScroll(); // 👈 se actualiza automáticamente con tu contexto
+  const { hasScrolled } = useScroll(); // se actualiza automáticamente con tu contexto
   const [open, setOpen] = React.useState(false);
-  console.log("hooksScroll:"+hasScrolled)
+  console.log("hooksScroll:" + hasScrolled);
 
   return (
     <AppBar
       position="fixed"
       elevation={hasScrolled ? 6 : 0}
       sx={{
-        top: hasScrolled ? 12 : 0, // 🔹 Se separa del top
-        width: hasScrolled ? "90%" : "100%", // 🔹 Se encoge
-        margin: hasScrolled ? "0 auto" : 0, // 🔹 Se centra horizontalmente
-        borderRadius: hasScrolled ? 4 : 0, // 🔹 Bordes redondeados al flotar
-        backgroundColor: theme.palette.primary.main,
+        top: hasScrolled ? 8 : 0,
+        height: "clamp(56px, 8vh, 72px)",
+        width: hasScrolled ? "fit-content" : "100%",
+        left: hasScrolled ? "50%" : 0,
+        transform: hasScrolled ? "translateX(-50%)" : "none",
+        justifyContent: "center",
+        borderRadius: hasScrolled ? 4 : 0,
+        backgroundColor: hasScrolled
+          ? alpha(theme.palette.primary.dark, 0.7)
+          : theme.palette.primary.main,
+        backdropFilter: hasScrolled ? "blur(3px)" : "none",
         transition: theme.transitions.create(
-          ["top", "width", "margin", "border-radius", "box-shadow"],
+          [
+            "top",
+            "width",
+            "margin",
+            "border-radius",
+            "box-shadow",
+            "transform",
+          ],
           {
             duration: theme.transitions.duration.standard,
             easing: theme.transitions.easing.easeInOut,
@@ -51,12 +65,14 @@ export default function FloatAppBar() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          alignContent: "center",
           transition: "all 0.3s ease",
-          minHeight: hasScrolled ? 56 : 72, // 🔹 más pequeño al hacer scroll
+          minHeight: hasScrolled ? 56 : 72, //  más pequeño al hacer scroll
           px: { xs: 2, md: 4 },
+          py: 1,
         }}
       >
-        {/* 🔹 Logo / título */}
+        {/* Logo / título */}
         <Box
           sx={{
             display: "flex",
@@ -75,26 +91,16 @@ export default function FloatAppBar() {
               transition: "all 0.3s ease",
             }}
           />
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: theme.palette.primary.contrastText,
-              transition: "all 0.3s ease",
-              fontSize: hasScrolled ? "1rem" : "1.25rem",
-            }}
-          >
-            Mi App
-          </Typography>
         </Box>
 
-        {/* 🔹 Menú desktop */}
+        {/* Menú desktop */}
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               style={({ isActive }) => ({
+                whiteSpace: "nowrap",
                 padding: "8px 12px",
                 borderRadius: "8px",
                 textDecoration: "none",
@@ -112,7 +118,7 @@ export default function FloatAppBar() {
           ))}
         </Box>
 
-        {/* 🔹 Botón hamburguesa (mobile) */}
+        {/* Botón hamburguesa (mobile) */}
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
           <IconButton
             onClick={() => setOpen(true)}

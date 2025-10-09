@@ -31,12 +31,14 @@ import fondo3 from "app/src/images/background/decorativoFondo3.svg";
 import fondo2 from "app/src/images/background/decorativoFondo2.svg?url";
 
 import fondo1 from "app/src/images/background/decorativoFondo1.svg?url";
+import { Typography } from "@mui/material";
+import TextModuleRotationImage from "~/atomic_design/organisms/modules/text_module_rotation_image";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "nosotros" }, { name: "description", content: "about" }];
 }
 
-const events = [
+const events= [
   {
     title: "Fundación",
     text: "Comenzamos con amigos...",
@@ -75,7 +77,7 @@ const events = [
   },
 ];
 
-const aboutData = [
+const aboutData:TextImageItem[] = [
   {
     title: "Propósito",
     text: "Unir a los bladers de Cali y sus alrededores en un espacio donde puedan competir, aprender y compartir la pasión por el Beyblade.",
@@ -139,38 +141,9 @@ export default function About() {
         Caja de prueba
       </div>
       {aboutData.map((item, index) => (
-        <div
-          key={item.title}
-          className={`relative flex flex-col lg:flex-row items-center justify-between p-0 lg:p-8 min-h-[300px] ${
-            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-          }`}
-        >
-          {/* Imagen de fondo con opacidad */}
-          <div
-            className="absolute inset-0 bg-cover bg-center brightness-50"
-            style={{ backgroundImage: `url(${item.image})` }}
-          />
-
-          {/* Card */}
-          <div className="relative w-full lg:w-2/4 p-4 pb-6 lg:p-4">
-            <CardText
-              title={item.title}
-              text={item.text}
-              background={item.background}
-              backgroundPosition={item.backgroundPosition}
-            />
-          </div>
-
-          {/* Imagen lateral */}
-          <div
-            className="relative w-1/4 lg:w-2/4  h-[130px] sm:h-[210px] lg:h-auto flex justify-center items-center p-1"
-            style={{ userSelect: "none", pointerEvents: "none" }}
-          >
-            <ImageRotation1 src={item.image} alt={item.title} />
-          </div>
-        </div>
+        <TextModuleRotationImage  key={item.title} item={item} index={index}/>
       ))}
-      <h2>Historia de la Comunidad</h2>
+      <Typography>Historia de la Comunidad</Typography>
       <TimeLine events={events} />
     </section>
   );

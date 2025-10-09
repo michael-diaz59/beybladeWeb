@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useScroll } from "~/utilities/hooks/scroll_provider";
 
 export default function ImageRotation1({
   src,
@@ -9,21 +10,7 @@ export default function ImageRotation1({
   alt: string;
   height?: string;
 }) {
-  const [rotation, setRotation] = useState(0);
-  const mainRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    // busca el <main> en el DOM
-    const el = document.querySelector("main");
-    if (!el) return;
-
-    const handleScroll = () => {
-      setRotation(el.scrollTop * 0.5);
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollY } = useScroll();
 
   return (
     <img
@@ -31,7 +18,7 @@ export default function ImageRotation1({
       alt={alt}
       className="object-contain"
       style={{
-        transform: `rotate(${rotation}deg)`,
+        transform: `rotate(${scrollY}deg)`,
         height: height,
         transition: "transform 0.05s linear",
       }}

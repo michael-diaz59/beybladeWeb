@@ -29,9 +29,11 @@ export default function Layout() {
   const theme = useTheme();
 
   return (
-    <Box component="main" display="flex" flexDirection="column" height="100vh">
-      <Box flex={1} overflow="auto">
+    <Box  display="flex" flexDirection="column" height="100vh">
+     
+      <Box component="main" flex={1} overflow="auto">
         <FloatAppBar />
+        <Box height="clamp(56px, 8vh, 72px)" ></Box>
         <Outlet />
         <Footer />
       </Box>

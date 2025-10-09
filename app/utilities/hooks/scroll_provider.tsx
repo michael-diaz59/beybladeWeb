@@ -80,7 +80,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
    const handleScroll = useCallback((target: HTMLElement) => {
     const currentY = target.scrollTop;
     setScrollY(currentY);
-    setHasScrolled(currentY > 5);
+    setHasScrolled(currentY > 90);
 
     if (currentY > prevScrollY.current) {
       setScrollDirection("down");
@@ -105,11 +105,12 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
     el.addEventListener("scroll", listener, { passive: true });
     console.log("[ScrollProvider] Escuchando scroll en <main>");
-
+     {/* Puedes comentar bloques enteros 
     return () => {
       el.removeEventListener("scroll", listener);
       console.log("[ScrollProvider] Listener de scroll removido");
     };
+    */}
   }, [handleScroll]);
 
   useEffect(() => {
