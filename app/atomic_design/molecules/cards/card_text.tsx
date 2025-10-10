@@ -22,9 +22,10 @@ export default function CardText({
         p: 3,
         borderRadius: 2,
         boxShadow: 5,
-        bgcolor:  (theme) => alpha(theme.palette.background.paper, 0.84), 
+        bgcolor:  (theme) => alpha(theme.palette.background.paper, 0.7), 
         overflow: "hidden",
         minHeight: 300,
+        backdropFilter: "blur(3px)" 
       }}
     >
 

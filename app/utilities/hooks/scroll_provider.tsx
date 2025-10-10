@@ -24,6 +24,15 @@ export interface ScrollContextType {
    */
   hasScrolled: boolean;
 
+   /**
+   * Indica si el usuario llego al final de la pagina.
+   *
+   * @remarks
+   * Esto permite activar transiciones o animaciones solo cuando
+   * el usuario ha llegado al final de la pagina.
+   */
+  atBottom: boolean;
+
   /**
    * Dirección actual del desplazamiento vertical.
    *
@@ -46,6 +55,7 @@ export interface ScrollContextType {
 export const ScrollContext = createContext<ScrollContextType>({
   scrollY: 0,
   hasScrolled: false,
+  atBottom:false,
   scrollDirection: "none",
 });
 
@@ -67,6 +77,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [scrollY, setScrollY] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [atBottom, setAtBottom]=useState(false);
   const [scrollDirection, setScrollDirection] = useState<
     "up" | "down" | "none"
   >("none");
@@ -79,8 +90,13 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
    */
    const handleScroll = useCallback((target: HTMLElement) => {
     const currentY = target.scrollTop;
+      const clientHeight = target.clientHeight;        // 👈 altura visible del contenedor
+  const scrollHeight = target.scrollHeight;  
     setScrollY(currentY);
-    setHasScrolled(currentY > 90);
+    setHasScrolled(currentY > 120);
+    console.log("scrollHeight:"+scrollHeight)
+    setAtBottom(currentY + clientHeight >= scrollHeight - 100)
+
 
     if (currentY > prevScrollY.current) {
       setScrollDirection("down");
@@ -120,13 +136,14 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       scrollY,
       hasScrolled,
+      atBottom,
       scrollDirection,
     }
   );
-}, [scrollY, hasScrolled, scrollDirection]);
+}, [scrollY, hasScrolled,atBottom, scrollDirection]);
 
   return (
-    <ScrollContext.Provider value={{ scrollY, hasScrolled, scrollDirection }}>
+    <ScrollContext.Provider value={{ scrollY, hasScrolled,atBottom, scrollDirection }}>
       {children}
     </ScrollContext.Provider>
   );

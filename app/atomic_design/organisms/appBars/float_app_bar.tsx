@@ -11,6 +11,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 import { useScroll } from "~/utilities/hooks/scroll_provider"; // tu hook de scroll
+import { CustomSx } from "app/atomic_design/sub_atomic/custom_sx";
 
 const menuItems = [
   { label: "Inicio", path: "/home" },
@@ -26,24 +27,24 @@ export default function FloatAppBar() {
   const theme = useTheme();
   const { hasScrolled } = useScroll(); // se actualiza automáticamente con tu contexto
   const [open, setOpen] = React.useState(false);
-  console.log("hooksScroll:" + hasScrolled);
+
 
   return (
     <AppBar
       position="fixed"
-      elevation={hasScrolled ? 6 : 0}
+      elevation={hasScrolled ? CustomSx.basic.elevation.cat3 : 0}
       sx={{
         top: hasScrolled ? 8 : 0,
-        height: "clamp(56px, 8vh, 72px)",
+        height: CustomSx.header.height,
         width: hasScrolled ? "fit-content" : "100%",
         left: hasScrolled ? "50%" : 0,
         transform: hasScrolled ? "translateX(-50%)" : "none",
         justifyContent: "center",
-        borderRadius: hasScrolled ? 4 : 0,
+        borderRadius: hasScrolled ? CustomSx.basic.borderRadius.circularBorder : CustomSx.basic.borderRadius.squareBorder,
         backgroundColor: hasScrolled
-          ? alpha(theme.palette.primary.dark, 0.7)
+          ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent)
           : theme.palette.primary.main,
-        backdropFilter: hasScrolled ? "blur(3px)" : "none",
+        backdropFilter: hasScrolled ? CustomSx.basic.backdropFilter : "none",
         transition: theme.transitions.create(
           [
             "top",
@@ -106,7 +107,7 @@ export default function FloatAppBar() {
                 textDecoration: "none",
                 color: isActive
                   ? theme.palette.primary.contrastText
-                  : theme.palette.grey[200],
+                  : theme.palette.secondary.contrastText,
                 backgroundColor: isActive
                   ? theme.palette.primary.dark
                   : "transparent",

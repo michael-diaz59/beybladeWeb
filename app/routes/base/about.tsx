@@ -137,9 +137,6 @@ export default function About() {
 
   return (
     <section className="w-full flex flex-col">
-      <div className="outline outline-2 outline-blue-500 sm:outline-green-500 md:outline-red-500 lg:outline-yellow-500 xl:outline-purple-500">
-        Caja de prueba
-      </div>
       {aboutData.map((item, index) => (
         <TextModuleRotationImage  key={item.title} item={item} index={index}/>
       ))}

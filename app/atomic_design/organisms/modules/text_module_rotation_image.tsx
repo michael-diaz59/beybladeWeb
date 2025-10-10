@@ -34,6 +34,7 @@ export default function TextModuleRotationImage({
           sx={{
             position: "absolute",
             inset: 0,
+          
             backgroundImage: `url(${item.image})`, // 👈 asegúrate que no falten comillas
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover", // 👈 mantiene el zoom sin distorsión
@@ -73,14 +74,14 @@ export default function TextModuleRotationImage({
       <Grow in timeout={900}>
         <Box
           sx={{
+            m:1,
             position: "relative",
             zIndex: 1,
             width: { xs: "60%", sm: "45%", lg: "40%" },
-            height: { xs: 150, sm: 210, lg: "auto" },
+            height: {lg: "auto" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            m: 2,
             userSelect: "none",
             pointerEvents: "none",
           }}

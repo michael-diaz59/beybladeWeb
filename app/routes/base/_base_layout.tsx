@@ -1,14 +1,13 @@
-import { Outlet, Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/store-core";
+import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../../store/store-core";
 import {
   Box,
 
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import ThemeSwitch from "~/atomic_design/atoms/switchs/theme_switch";
-import Footer from "~/atomic_design/organisms/footers/footer";
+import FloatFooter from "~/atomic_design/organisms/footers/float_footer";
 import FloatAppBar from "~/atomic_design/organisms/appBars/float_app_bar";
+import { CustomSx } from "~/atomic_design/sub_atomic/custom_sx";
 
 // Estado del menú hamburguesa
 
@@ -23,8 +22,6 @@ const menuItems = [
 ];
 
 export default function Layout() {
-  const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
   const mode = useAppSelector((state) => state.theme.mode);
   const theme = useTheme();
 
@@ -33,9 +30,9 @@ export default function Layout() {
      
       <Box component="main" flex={1} overflow="auto">
         <FloatAppBar />
-        <Box height="clamp(56px, 8vh, 72px)" ></Box>
+        <Box height={CustomSx.header.height} sx={{backgroundColor:theme.palette.primary.main}} ></Box>
         <Outlet />
-        <Footer />
+        <FloatFooter />
       </Box>
     </Box>
   );
