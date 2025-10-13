@@ -5,7 +5,7 @@ import {
 
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import FloatFooter from "~/atomic_design/organisms/footers/float_footer";
+import FloatFooter from "~/atomic_design/organisms/footers/footer3";
 import FloatAppBar from "~/atomic_design/organisms/appBars/float_app_bar";
 import { CustomSx } from "~/atomic_design/sub_atomic/custom_sx";
 

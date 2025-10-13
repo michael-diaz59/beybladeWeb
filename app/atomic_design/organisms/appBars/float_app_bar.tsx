@@ -3,7 +3,6 @@ import {
   AppBar,
   Box,
   Toolbar,
-  Typography,
   IconButton,
   useTheme,
   alpha,
@@ -16,59 +15,61 @@ import { CustomSx } from "app/atomic_design/sub_atomic/custom_sx";
 const menuItems = [
   { label: "Inicio", path: "/home" },
   { label: "Quiénes somos", path: "/about" },
-  { label: "Calendario", path: "/calendar" },
-  { label: "Jugadores", path: "/players" },
-  { label: "Equipos", path: "/teams" },
-  { label: "Beys", path: "/beys" },
+  { label: "competitivo", path: "/calendar" },
   { label: "Tienda", path: "/store" },
 ];
 
 export default function FloatAppBar() {
   const theme = useTheme();
-  const { hasScrolled } = useScroll(); // se actualiza automáticamente con tu contexto
-  const [open, setOpen] = React.useState(false);
+  const { hasScrolled,scrollDirection } = useScroll();
+ const showFloatAppBar = hasScrolled && scrollDirection === "up";
+  console.log("showFloatAppBar: "+showFloatAppBar)
+
+
 
 
   return (
     <AppBar
       position="fixed"
-      elevation={hasScrolled ? CustomSx.basic.elevation.cat3 : 0}
+      elevation={showFloatAppBar ? CustomSx.basic.elevation.cat3 : hasScrolled? CustomSx.basic.elevation.cat3:0}
       sx={{
-        top: hasScrolled ? 8 : 0,
+        top: showFloatAppBar ? 8 : hasScrolled? 8 :0,
+        opacity: showFloatAppBar?  1 : hasScrolled? 0:1,
+        pointerEvents: showFloatAppBar ? "auto" : hasScrolled? "none":"auto",
+        ...((showFloatAppBar || !hasScrolled) && {
+          transform: "scale(0.1)",
+        }),
+
+        ...((!showFloatAppBar || hasScrolled) && {
+          transform: "scale(1)",
+        }),
+
         height: CustomSx.header.height,
-        width: hasScrolled ? "fit-content" : "100%",
-        left: hasScrolled ? "50%" : 0,
-        transform: hasScrolled ? "translateX(-50%)" : "none",
+        width: showFloatAppBar ? "50%" : hasScrolled? "70%":"100%",
+        left: "50%",
+        transform: "translateX(-50%)", 
+        transition: "width 1s ease, max-width 1s ease, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        transformOrigin: "center center",
+        overflow: "hidden",
+        willChange: "width, transform",
         justifyContent: "center",
-        borderRadius: hasScrolled ? CustomSx.basic.borderRadius.circularBorder : CustomSx.basic.borderRadius.squareBorder,
-        backgroundColor: hasScrolled
+        borderRadius: showFloatAppBar ? CustomSx.basic.borderRadius.circularBorder : hasScrolled?
+         CustomSx.basic.borderRadius.circularBorder:CustomSx.basic.borderRadius.squareBorder,
+        backgroundColor: showFloatAppBar
           ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent)
-          : theme.palette.primary.main,
-        backdropFilter: hasScrolled ? CustomSx.basic.backdropFilter : "none",
-        transition: theme.transitions.create(
-          [
-            "top",
-            "width",
-            "margin",
-            "border-radius",
-            "box-shadow",
-            "transform",
-          ],
-          {
-            duration: theme.transitions.duration.standard,
-            easing: theme.transitions.easing.easeInOut,
-          }
-        ),
+          : hasScrolled? alpha(theme.palette.primary.main, CustomSx.basic.trasparent) :theme.palette.primary.main,
+        backdropFilter: showFloatAppBar ? CustomSx.basic.backdropFilter : hasScrolled? CustomSx.basic.backdropFilter:"none",
+  
       }}
     >
       <Toolbar
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: showFloatAppBar? "center":"space-between",
           alignItems: "center",
+          transition: "width 1s ease, max-width 1s ease, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          willChange: "width, transform",
           alignContent: "center",
-          transition: "all 0.3s ease",
-          minHeight: hasScrolled ? 56 : 72, //  más pequeño al hacer scroll
           px: { xs: 2, md: 4 },
           py: 1,
         }}
@@ -122,7 +123,6 @@ export default function FloatAppBar() {
         {/* Botón hamburguesa (mobile) */}
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
           <IconButton
-            onClick={() => setOpen(true)}
             sx={{ color: theme.palette.primary.contrastText }}
           >
             <MenuIcon />
