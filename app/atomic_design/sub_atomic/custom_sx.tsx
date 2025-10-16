@@ -2,10 +2,14 @@ export const CustomSx =
   {
     header: {
       height: "clamp(44px, 8vh, 58px)",
+      heightMB: "clamp(52px, 8vh, 66px)",
     },
     basic: {
       backdropFilter: "blur(3px)",
-      trasparent: 0.7,
+      trasparent:{
+        backgroundsElements: 0.7,
+        backgrounds: 0.3,
+      },
       borderRadius: {
         circularBorder: 4,
         squareBorder: 0,

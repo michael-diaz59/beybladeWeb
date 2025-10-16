@@ -1,36 +1,11 @@
-import { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
-import App from "./app";
 import { store } from "./store/store-core";
-import { getTheme } from "./atomic_design/natural_rules/theme";
-import { useAppSelector } from "./store/store-core";
-
 import "./app.css";
-import { ScrollProvider } from "./utilities/hooks/scroll_provider";
+import ThemedAppWrapper from "./atomic_design/natural_rules/ThemeProviderWrapper";
 
-function ThemedAppWrapper() {
-  const mode = useAppSelector((state) => state.theme.mode);
-  const theme = getTheme(mode);
-
-  useEffect(() => {
-    localStorage.setItem("themeMode", mode);
-  }, [mode]);
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ScrollProvider>
-        <App />
-      </ScrollProvider>
-    </ThemeProvider>
-  );
-}
-
-// Montaje de la app
+// 🧩 Montaje raíz de la app
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>

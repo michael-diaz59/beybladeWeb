@@ -94,8 +94,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   const scrollHeight = target.scrollHeight;  
     setScrollY(currentY);
     setHasScrolled(currentY > 120);
-    console.log("scrollHeight:"+scrollHeight)
-    setAtBottom(currentY + clientHeight >= scrollHeight - 100)
+    setAtBottom(currentY + clientHeight >= scrollHeight - 200)
 
 
     if (currentY > prevScrollY.current) {
@@ -120,7 +119,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     const listener = () => handleScroll(el);
 
     el.addEventListener("scroll", listener, { passive: true });
-    console.log("[ScrollProvider] Escuchando scroll en <main>");
+    //console.log("[ScrollProvider] Escuchando scroll en <main>");
      {/* Puedes comentar bloques enteros 
     return () => {
       el.removeEventListener("scroll", listener);
@@ -129,6 +128,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     */}
   }, [handleScroll]);
 
+  {/* 
   useEffect(() => {
   console.log(
     `%c[ScrollProvider]`,
@@ -140,7 +140,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
       scrollDirection,
     }
   );
-}, [scrollY, hasScrolled,atBottom, scrollDirection]);
+}, [scrollY, hasScrolled,atBottom, scrollDirection]); */}
 
   return (
     <ScrollContext.Provider value={{ scrollY, hasScrolled,atBottom, scrollDirection }}>

@@ -4,7 +4,7 @@ import Grow from "@mui/material/Grow";
 import Slide from "@mui/material/Slide";
 import ImageRotation1 from "~/atomic_design/atoms/images/image_rotation1";
 import CardText from "~/atomic_design/molecules/cards/card_text";
-import UriBase from "~/utilities/helper/uri-base64";
+import UriBase from "~/utilities/helper/uri_base64";
 
 export default function TextModuleRotationImage({
   item,

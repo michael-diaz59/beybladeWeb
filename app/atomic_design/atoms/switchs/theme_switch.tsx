@@ -1,35 +1,52 @@
-import { Switch } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Switch, useTheme, Box, Tooltip } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "~/store/store-core";
+import { toggleTheme } from "~/store/themeSlice"; 
+import { useEffect } from "react";
 
-interface ThemeSwitchProps {
-  checked: boolean;
-  onChange: () => void;
-}
-
-export default function ThemeSwitch({ checked, onChange }: ThemeSwitchProps) {
+export default function ThemeSwitch() {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const mode = useAppSelector((state) => state.theme.mode);
+
+  // Sincroniza el estado con localStorage
+  useEffect(() => {
+    localStorage.setItem("themeMode", mode);
+  }, [mode]);
+
+  const handleToggle = () => {
+    dispatch(toggleTheme());
+  };
 
   return (
-    <Switch
-      checked={checked}
-      onChange={onChange}
-      aria-label="Cambiar tema claro/oscuro" 
-      sx={{
-        "& .MuiSwitch-switchBase": {
-          color: theme.palette.primary.contrastText, // color del thumb
-        },
-        "& .MuiSwitch-switchBase.Mui-checked": {
-          color: theme.palette.primary.contrastText, // thumb activo
-        },
-        "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-          backgroundColor: theme.palette.primary.contrastText, // track activo
-          opacity: 0.7,
-        },
-        "& .MuiSwitch-track": {
-          backgroundColor: theme.palette.primary.contrastText, // track inactivo
-          opacity: 0.3,
-        },
-      }}
-    />
+    <Tooltip title={`Cambiar a modo ${mode === "light" ? "oscuro" : "claro"}`}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        {mode === "dark" ? (
+          <Brightness4 sx={{ color: theme.palette.primary.main }} />
+        ) : (
+          <Brightness7 sx={{ color: theme.palette.secondary.main }} />
+        )}
+
+        <Switch
+          checked={mode === "dark"}
+          onChange={handleToggle}
+          color="default"
+          sx={{
+            "& .MuiSwitch-switchBase.Mui-checked": {
+              color: theme.palette.primary.main,
+            },
+            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+              backgroundColor: theme.palette.secondary.main,
+            },
+          }}
+        />
+      </Box>
+    </Tooltip>
   );
 }

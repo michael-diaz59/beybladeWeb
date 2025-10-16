@@ -54,7 +54,7 @@ export default function FloatFooter() {
           width: expanded ? "100%" : "fit-content",
           maxWidth: expanded ? "none" : "90vw",
           backgroundColor: isFloatingVisible
-            ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent)
+            ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent.backgroundsElements)
             : theme.palette.primary.main,
           backdropFilter: isFloatingVisible
             ? CustomSx.basic.backdropFilter
