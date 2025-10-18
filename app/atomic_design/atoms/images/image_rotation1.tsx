@@ -17,8 +17,8 @@ export default function ImageRotation1({
       alt={alt}
       className="object-contain"
       style={{
-        transform: `rotate(${scrollY}deg)`,
-        height,
+        transform: `rotate(${scrollY / 1.8}deg)`,
+        height:height,
         willChange: "transform", // 👈 le dice al navegador que optimice GPU
       }}
     />
