@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
-
 
 /**
  * Define la estructura de los valores compartidos por el ScrollContext.
@@ -24,7 +24,7 @@ export interface ScrollContextType {
    */
   hasScrolled: boolean;
 
-   /**
+  /**
    * Indica si el usuario llego al final de la pagina.
    *
    * @remarks
@@ -43,6 +43,7 @@ export interface ScrollContextType {
    * @defaultValue "none"
    */
   scrollDirection: "up" | "down" | "none";
+  setScrollTarget?: (el: HTMLElement | null) => void; // 👈 nuevo
 }
 
 /**
@@ -55,7 +56,7 @@ export interface ScrollContextType {
 export const ScrollContext = createContext<ScrollContextType>({
   scrollY: 0,
   hasScrolled: false,
-  atBottom:false,
+  atBottom: false,
   scrollDirection: "none",
 });
 
@@ -75,9 +76,12 @@ export const ScrollContext = createContext<ScrollContextType>({
 export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const targetRef = React.useRef<HTMLElement | null>(null);
+
   const [scrollY, setScrollY] = useState(0);
+  const location = useLocation();
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [atBottom, setAtBottom]=useState(false);
+  const [atBottom, setAtBottom] = useState(false);
   const [scrollDirection, setScrollDirection] = useState<
     "up" | "down" | "none"
   >("none");
@@ -85,65 +89,96 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   // Guardamos la posición previa para detectar dirección
   const prevScrollY = React.useRef(0);
 
+  const ticking = React.useRef(false);
+
   /**
    * Listener optimizado que actualiza el estado del scroll.
    */
-   const handleScroll = useCallback((target: HTMLElement) => {
+  const handleScroll = useCallback((target: HTMLElement) => {
     const currentY = target.scrollTop;
-      const clientHeight = target.clientHeight;        // 👈 altura visible del contenedor
-  const scrollHeight = target.scrollHeight;  
-    setScrollY(currentY);
-    setHasScrolled(currentY > 120);
-    setAtBottom(currentY + clientHeight >= scrollHeight - 200)
+    const clientHeight = target.clientHeight;
+    const scrollHeight = target.scrollHeight;
 
+    if (!ticking.current) {
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        setScrollY(currentY);
+        setHasScrolled(currentY > 120);
+        setAtBottom(currentY + clientHeight >= scrollHeight - 200);
 
-    if (currentY > prevScrollY.current) {
-      setScrollDirection("down");
-    } else if (currentY < prevScrollY.current) {
-      setScrollDirection("up");
-    } else {
-      setScrollDirection("none");
+        if (currentY > prevScrollY.current) {
+          setScrollDirection("down");
+        } else if (currentY < prevScrollY.current) {
+          setScrollDirection("up");
+        } else {
+          setScrollDirection("none");
+        }
+
+        prevScrollY.current = currentY;
+        ticking.current = false;
+      });
     }
-
-    prevScrollY.current = currentY;
   }, []);
-
-
-   useEffect(() => {
-    const el = document.querySelector("main");
-    if (!el) {
-      console.warn("[ScrollProvider] No se encontró el elemento <main>.");
-      return;
-    }
-
-    const listener = () => handleScroll(el);
-
-    el.addEventListener("scroll", listener, { passive: true });
-    //console.log("[ScrollProvider] Escuchando scroll en <main>");
-     {/* Puedes comentar bloques enteros 
-    return () => {
-      el.removeEventListener("scroll", listener);
-      console.log("[ScrollProvider] Listener de scroll removido");
-    };
-    */}
+  // 👇 función estable para pasar al add/removeEventListener
+  const onScroll = useCallback(() => {
+    console.log("onScroll");
+    if (targetRef.current) handleScroll(targetRef.current);
   }, [handleScroll]);
 
-  {/* 
-  useEffect(() => {
-  console.log(
-    `%c[ScrollProvider]`,
-    "color:#4fc3f7; font-weight:bold;",
-    {
-      scrollY,
-      hasScrolled,
-      atBottom,
-      scrollDirection,
-    }
+  // 👇 función pública para cambiar el elemento observado
+  const setScrollTarget = useCallback(
+    (el: HTMLElement | null) => {
+      // Limpia el anterior
+      if (targetRef.current) {
+        targetRef.current.removeEventListener("scroll", onScroll);
+        console.log("removeEventListener");
+      }
+
+      // Actualiza referencia
+      targetRef.current = el;
+
+      // Si hay nuevo main, escucha su scroll
+      if (el) {
+        el.addEventListener("scroll", onScroll, { passive: true });
+        console.log("addEventListener");
+        const currentY = el.scrollTop;
+        prevScrollY.current = currentY;
+        setScrollY(currentY);
+        setHasScrolled(currentY > 120);
+        const clientHeight = el.clientHeight;
+        const scrollHeight = el.scrollHeight;
+        setAtBottom(currentY + clientHeight >= scrollHeight - 200);
+        console.log("setAtBottom");
+        console.log(currentY + clientHeight >= scrollHeight - 200);
+      }
+    },
+    [onScroll] // depende del listener estable
   );
-}, [scrollY, hasScrolled,atBottom, scrollDirection]); */}
+
+  useEffect(() => {
+    // 👇 Cuando cambie la ruta, vuelve a evaluar el scroll actual
+    onScroll();
+  }, [location, onScroll]);
+
+  // Limpieza global al desmontar el provider
+  useEffect(() => {
+    return () => {
+      if (targetRef.current)
+        targetRef.current.removeEventListener("scroll", onScroll);
+      console.log("Limpieza global");
+    };
+  }, [onScroll]);
 
   return (
-    <ScrollContext.Provider value={{ scrollY, hasScrolled,atBottom, scrollDirection }}>
+    <ScrollContext.Provider
+      value={{
+        scrollY,
+        hasScrolled,
+        atBottom,
+        scrollDirection,
+        setScrollTarget,
+      }}
+    >
       {children}
     </ScrollContext.Provider>
   );

@@ -5,9 +5,13 @@ export type RoutNav = {
 
 export const baseAppBar: RoutNav[] = [
   { label: "Inicio", path: "/home" },
-  { label: "Nosotros", path: "/about" },
   { label: "competitivo", path: "/calendar" },
   { label: "Tienda", path: "/store" },
+];
+
+export const baseFooter: RoutNav[] = [
+  { label: "Inicio", path: "/home" },
+  { label: "Nosotros", path: "/about" },
 ];
 
 const menuItems: RoutNav[] = [

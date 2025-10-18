@@ -1,99 +1,43 @@
-import { useRef, useState, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Mousewheel } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/free-mode";
+
 import CardText from "~/atomic_design/molecules/cards/card_text";
-import { Box, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
-type Event = {
-  title: string;
-  text: string;
-  background?: string;
-  backgroundPosition?: string;
-};
-
-export default function Timeline({ events }: { events: Event[] }) {
+export default function Timeline({ events }: { events: TextImageItem[] }) {
   return (
-    <Box
-      sx={{
-        position: "relative",
-        display: "flex",
-        overflowX: "auto",
-        py: 6,
-      }}
-    >
-      {/* 🔹 Línea central */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          height: "2px",
-          bgcolor: "black",
-          zIndex: 0,
-        }}
-      />
+    <Box sx={{ position: "relative", py: 4 }}>
 
-      {/* 🔹 Eventos */}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 6,
-          position: "relative",
-          zIndex: 1,
-          px: 4,
-        }}
+   
+
+      {/* 🔹 Swiper para arrastre libre */}
+      <Swiper
+        modules={[FreeMode, Mousewheel]}
+        freeMode={true}
+        grabCursor={true}
+        mousewheel={{ forceToAxis: true }}
+        slidesPerView="auto"
+        spaceBetween={8}
+        style={{ padding: "8px 0", zIndex: 1 }}
       >
         {events.map((event, index) => {
-          const isTop = index % 2 === 0; // alterna arriba/abajo
-
           return (
-            <Box
+            <SwiperSlide
               key={index}
-              sx={{
+              style={{
+                width: "fit-content",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                position: "relative",
-                minWidth: 280,
               }}
             >
-              {/* Card arriba */}
-              {isTop && (
-                <Box sx={{ mb: 2 }}>
-                  <CardText
-                    title={event.title}
-                    text={event.text}
-                    background={event.background}
-                    backgroundPosition={event.backgroundPosition}
-                  />
-                </Box>
-              )}
-
-              {/* Conector vertical */}
-              <Box
-                aria-hidden
-                sx={{
-                  width: "2px",
-                  height: "20px",
-                  bgcolor: "black",
-                }}
-              />
-
-              {/* Card abajo */}
-              {!isTop && (
-                <Box sx={{ mt: 2 }}>
-                  <CardText
-                    title={event.title}
-                    text={event.text}
-                    background={event.background}
-                    backgroundPosition={event.backgroundPosition}
-                  />
-                </Box>
-              )}
-            </Box>
+             <CardText item={event} />
+            </SwiperSlide>
           );
         })}
-      </Box>
+      </Swiper>
     </Box>
   );
 }

@@ -1,4 +1,3 @@
-import { useEffect, useState, useRef } from "react";
 import { useScroll } from "~/utilities/hooks/scroll_provider";
 
 export default function ImageRotation1({
@@ -19,8 +18,8 @@ export default function ImageRotation1({
       className="object-contain"
       style={{
         transform: `rotate(${scrollY}deg)`,
-        height: height,
-        transition: "transform 0.05s linear",
+        height,
+        willChange: "transform", // 👈 le dice al navegador que optimice GPU
       }}
     />
   );

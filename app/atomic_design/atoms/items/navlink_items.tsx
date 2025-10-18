@@ -1,13 +1,26 @@
-import { Box, MenuItem, useTheme } from "@mui/material";
+import {
+  Box,
+  MenuItem,
+  useTheme,
+  type SxProps,
+  type Theme,
+} from "@mui/material";
+import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { CustomSx } from "~/atomic_design/sub_atomic/custom_sx";
 import type { RoutNav } from "~/utilities/helper/name_routes";
 
-export function NavLinkItems({items}: { items: RoutNav[]} ){
+export function NavLinkItems({
+  items,
+  sx,
+}: {
+  items: RoutNav[];
+  sx?: SxProps<Theme>;
+}) {
   const theme = useTheme();
 
   return (
-    <Box>
+    <Box sx={sx}>
       {items.map((item) => (
         <NavLink
           key={item.path}
@@ -33,34 +46,49 @@ export function NavLinkItems({items}: { items: RoutNav[]} ){
   );
 }
 
-export function MenuNavLinkItems({items, callback}: { items: RoutNav[], callback: ()=> void} ){
+export function MenuNavLinkItems({
+  items,
+  callback,
+}: {
+  items: RoutNav[];
+  callback: () => void;
+}) {
   const theme = useTheme();
+    const firstItemRef = useRef<HTMLLIElement | null>(null);
+   // 👇 Enfoca el primer item cuando el menú se abre
+  useEffect(() => {
+    if (firstItemRef.current) {
+      firstItemRef.current.focus();
+    }
+  }, []);
 
   return (
-    <Box sx={{ width: "100%"}}>
+    <Box sx={{ width: "100%" }}  >
       {items.map((item) => (
-              <MenuItem
-                key={item.path}
-                component={NavLink}
-                to={item.path}
-                onClick={() => callback()}
-                sx={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "center",
-                  color: theme.palette.text.primary,
-                  alignContent: "center",
-                  alignItems: "center",
-                  borderRadius: CustomSx.basic.borderRadius.circularBorder,
-                  "&.active": {
-                    backgroundColor: theme.palette.primary.light,
-                    color: theme.palette.primary.contrastText,
-                  },
-                }}
-              >
-                {item.label}
-              </MenuItem>
-            ))}
+        <MenuItem
+          key={item.path}
+          component={NavLink}
+          to={item.path}
+          onClick={() => callback()}
+          role="menuitem" // 🔹 Mejora la semántica accesible
+          tabIndex={0} // 🔹 Garantiza que pueda recibir foco con Tab
+          sx={{
+            display: "block",
+            width: "100%",
+            textAlign: "center",
+            color: theme.palette.text.primary,
+            alignContent: "center",
+            alignItems: "center",
+            borderRadius: CustomSx.basic.borderRadius.circularBorder,
+            "&.active": {
+              backgroundColor: theme.palette.primary.light,
+              color: theme.palette.primary.contrastText,
+            },
+          }}
+        >
+          {item.label}
+        </MenuItem>
+      ))}
     </Box>
   );
 }

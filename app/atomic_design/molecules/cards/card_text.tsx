@@ -1,19 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
+import { CustomSx } from "~/atomic_design/sub_atomic/custom_sx";
 
 import UriBase from "~/utilities/helper/uri_base64"
 
-export default function CardText({
-  title,
-  text,
-  background,
-  backgroundPosition,
-}: {
-  title: string;
-  text: string;
-  background?: string;
-  backgroundPosition?: string;
-}) {
+export default function CardText({item}:{item:TextImageItem}) {
   return (
 
     <Box
@@ -22,10 +13,10 @@ export default function CardText({
         p: 3,
         borderRadius: 2,
         boxShadow: 5,
-        bgcolor:  (theme) => alpha(theme.palette.background.paper, 0.7), 
+        bgcolor:  (theme) => alpha(theme.palette.background.paper, CustomSx.basic.trasparent.backgroundsElements), 
         overflow: "hidden",
         minHeight: 300,
-        backdropFilter: "blur(3px)" 
+        backdropFilter: CustomSx.basic.backdropFilter
       }}
     >
 
@@ -34,22 +25,22 @@ export default function CardText({
       <div
         className="absolute inset-0 bg-no-repeat bg-top-right  saturate-80 opacity-50"
         style={{
-          backgroundImage: UriBase(background),
+          backgroundImage: UriBase(item.background),
           backgroundSize: "cover", // 👈 ajusta toda la imagen
-          backgroundPosition: backgroundPosition, // 👈 la pega a la esquina
+          backgroundPosition: item.backgroundPosition, // 👈 la pega a la esquina
         }}
       />
 
       {/* 🔹 Contenido encima */}
       <Box sx={{ position: "relative", zIndex: 1 }}>
         <Typography variant="h2" fontWeight="bold" gutterBottom>
-          {title}
+          {item.title}
         </Typography>
         <Typography
           variant="h5"
           sx={{ whiteSpace: "pre-line", lineHeight: 1.6 }}
         >
-          {text}
+          {item.text}
         </Typography>
       </Box>
     </Box>

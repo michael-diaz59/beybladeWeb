@@ -11,19 +11,9 @@ import {
   MenuItem,
   Drawer,
   Tooltip,
-  Button,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  DialogActions,
-  Dialog,
-  DialogContent,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
-import { NavLink } from "react-router-dom";
 import { useScroll } from "~/utilities/hooks/scroll_provider";
 import { CustomSx } from "app/atomic_design/sub_atomic/custom_sx";
 import { useLocation } from "react-router-dom";
@@ -32,9 +22,6 @@ import {
   MenuNavLinkItems,
   NavLinkItems,
 } from "~/atomic_design/atoms/items/navlink_items";
-import ThemeSwitch from "~/atomic_design/atoms/switchs/theme_switch";
-import { useAppDispatch, useAppSelector } from "~/store/store-core";
-import { setContrast } from "~/store/themeSlice";
 import AccessibilityDialog from "~/atomic_design/atoms/dialogs/accessibiliy_dialog";
 
 export default function FloatAppBar() {
@@ -44,10 +31,6 @@ export default function FloatAppBar() {
   const theme = useTheme();
   const { hasScrolled, scrollDirection } = useScroll();
   const showFloatAppBar = hasScrolled && scrollDirection === "up";
-  const mode = useAppSelector((state) => state.theme.mode);
-
-  const dispatch = useAppDispatch();
-  const contrast = useAppSelector((state) => state.theme.contrast);
 
   return (
     <>
@@ -97,9 +80,15 @@ export default function FloatAppBar() {
             ? CustomSx.basic.borderRadius.circularBorder
             : CustomSx.basic.borderRadius.squareBorder,
           backgroundColor: showFloatAppBar
-            ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent.backgroundsElements)
+            ? alpha(
+                theme.palette.primary.main,
+                CustomSx.basic.trasparent.backgroundsElements
+              )
             : hasScrolled
-            ? alpha(theme.palette.primary.main, CustomSx.basic.trasparent.backgroundsElements)
+            ? alpha(
+                theme.palette.primary.main,
+                CustomSx.basic.trasparent.backgroundsElements
+              )
             : theme.palette.primary.main,
           backdropFilter: showFloatAppBar
             ? CustomSx.basic.backdropFilter
@@ -146,7 +135,6 @@ export default function FloatAppBar() {
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
             <NavLinkItems items={baseAppBar}></NavLinkItems>
           </Box>
-
           <Box
             sx={{
               display: { xs: "flex", md: "none" },
@@ -180,7 +168,12 @@ export default function FloatAppBar() {
           >
             <IconButton
               color="inherit"
-              onClick={() => setExpandedAccessibility(true)}
+              onClick={() => {
+                if (document.activeElement instanceof HTMLElement) {
+                  document.activeElement.blur();
+                }
+                setExpandedAccessibility(true);
+              }}
             >
               <SettingsAccessibilityIcon />
             </IconButton>
@@ -233,11 +226,11 @@ export default function FloatAppBar() {
               flexDirection: "column",
               alignItems: "center",
               alignContent: "center",
-                   pl: 2,
+              pl: 2,
               pr: 2,
-         
             }}
             gap={1}
+            role="menu"
           >
             <MenuNavLinkItems
               items={baseAppBar}
@@ -246,10 +239,18 @@ export default function FloatAppBar() {
 
             {/* Botón de accesibilidad */}
             <MenuItem
-              onClick={() => setExpandedAccessibility(true)}
+              onClick={() => {
+                setExpandedAccessibility(true);
+                if (document.activeElement instanceof HTMLElement) {
+                  document.activeElement.blur();
+                }
+                setExpandedAccessibility(true);
+              }}
+              role="menuitem" // 🔹 Mejora la semántica accesible
+              tabIndex={0}
               sx={{
-                 mt: 0,
-                 width:"100%",
+                mt: 0,
+                width: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

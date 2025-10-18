@@ -1,10 +1,7 @@
 import type { Route } from "../+types/about";
 
-import CardText from "~/atomic_design/molecules/cards/card_text";
+import TimeLine  from "~/atomic_design/organisms/time_lines/time_line";
 
-import TimeLine from "~/atomic_design/organisms/time_lines/time_line";
-
-import ImageRotation1 from "~/atomic_design/atoms/images/image_rotation1";
 
 import buster from "app/src/images/bustersin fondo2.png";
 
@@ -38,41 +35,47 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "nosotros" }, { name: "description", content: "about" }];
 }
 
-const events= [
+const events: TextImageItem[] = [
   {
-    title: "Fundación",
-    text: "Comenzamos con amigos...",
+    title: "origen",
+    text: "Antes de beyblade cali se creo una iniciativa de beyblade colombia el 14 de octubre del 2022 con el cual se busco reunir a los bladers de todo el pais en una comunidad unificada",
     background: fondo1,
+    image:"",
     backgroundPosition: "top right",
   },
   {
-    title: "Primer Torneo",
-    text: "20 jugadores participaron...",
+    title: "inicio de bey cali",
+    text: "con la comunidad unificada de beyColombia se empezaron a segmentar comunidades especificas para cada ciudad, dentro de las cuales se creo la comunidad de beyCale el 8 de enero del 2024",
     background: fondo1,
-    backgroundPosition: "top right",
-  },
-  {
-    title: "Expansión",
-    text: "Abrimos nueva sede...",
-    background: fondo1,
+     image:"",
     backgroundPosition: "top right",
   },
   {
     title: "Expansión",
     text: "Abrimos nueva sede...",
     background: fondo1,
+     image:"",
     backgroundPosition: "top right",
   },
   {
     title: "Expansión",
     text: "Abrimos nueva sede...",
     background: fondo1,
+     image:"",
     backgroundPosition: "top right",
   },
   {
     title: "Expansión",
     text: "Abrimos nueva sede...",
     background: fondo1,
+     image:"",
+    backgroundPosition: "top right",
+  },
+  {
+    title: "Expansión",
+    text: "Abrimos nueva sede...",
+    background: fondo1,
+     image:"",
     backgroundPosition: "top right",
   },
 ];

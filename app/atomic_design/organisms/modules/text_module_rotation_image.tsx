@@ -61,11 +61,7 @@ export default function TextModuleRotationImage({
             p: 2,
           }}
         >
-          <CardText
-            title={item.title}
-            text={item.text}
-            background={item.background}
-            backgroundPosition={item.backgroundPosition}
+          <CardText item={item}
           />
         </Box>
       </Slide>
